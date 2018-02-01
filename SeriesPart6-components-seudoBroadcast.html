@@ -1,0 +1,32 @@
+<html>
+<head>
+	<script src="resources/vue.js"></script>
+  <link rel="stylesheet" type="text/css" href="resources/bulma.css">
+</head>
+<body style="padding-top: 40px;">
+  <div id="root" class="container">
+  	<coupon></coupon>
+    <h1 v-if="couponApplied">You used a coupon!</h1>
+  </div>
+</body>
+<script type="text/javascript">
+  //global var in window
+  window.Event = new class{
+    constructor(){this.vue = new Vue();}
+    fire(event,data=null){this.vue.$emit(event,data);}
+    listen(event,callback){this.vue.$on(event,callback);}
+  }
+</script>
+<script type="text/javascript" src="components/couponVueComponent.js"></script>
+<script type="text/javascript">
+	var app = new Vue({
+		el:'#root',
+    data:{
+      couponApplied:false
+    },
+    created(){
+      Event.listen('applied',()=>alert('Handle it!'))
+    }
+	});
+</script>
+</html>

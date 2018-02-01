@@ -1,0 +1,27 @@
+<html>
+<head>
+	<script src="resources/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="resources/bulma.css">
+</head>
+<body style="padding-top: 40px;">
+  <div id="root" class="container">
+  		<tabs>
+  			<tab name="About us">
+  				<h1>Here is the content for the About us tab</h1>
+  			</tab>
+  			<tab name="About Out Culture" :selected="true">
+  				<h1>Here is the content for the About Out Culture tab</h1>
+  			</tab>
+  			<tab name="About Out Vision">
+  				<h1>Here is the content for the About Out Vision tab</h1>
+  			</tab>
+  		</tabs>
+  </div>
+</body>
+<script type="text/javascript" src="components/tabsVueComponent.js"></script>
+<script type="text/javascript">
+	var app = new Vue({
+		el:'#root'
+	});
+</script>
+</html>
