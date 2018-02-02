@@ -1,0 +1,24 @@
+<html>
+<head>
+	<script src="resources/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="resources/bulma.css">
+</head>
+<body style="padding-top: 40px;">
+  <div id="root" class="container">
+    <!-- with inline-template the component does not need a template attribute-->
+  	<progress-view inline-template>
+      <div>
+          <h1>Your progress Through this is {{completionRate}}%</h1>
+          <button @click="completionRate+=10">Update</button>
+      </div>
+    </progress-view>
+  	
+  </div>
+</body>
+<script type="text/javascript" src="components/progressViewVueComponent.js"></script>
+<script type="text/javascript">
+	new Vue({
+		el:'#root'
+	});
+</script>
+</html>
