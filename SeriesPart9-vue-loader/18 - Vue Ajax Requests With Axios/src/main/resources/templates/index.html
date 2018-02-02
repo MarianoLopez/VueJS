@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kotlin Vue</title>
+    <script src="../static/js/vue.js" th:src="@{js/vue.js}"></script>
+    <script src="../static/js/axios.min.js" th:src="@{js/axios.min.js}"></script>
+</head>
+<body>
+    <div id="root">
+        <ul>
+            <li v-for="skill in skills">{{skill}}</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        Vue.prototype.$http = axios;//replace vue resource with axios
+        new Vue({
+            el:'#root',
+            data:{
+                skills:[]
+            },
+            mounted(){
+                this.$http.get('/skills')
+                    .then(resp=>this.skills = resp.data)
+                    .catch(error=>this.skills=['fake','data']);
+            }
+        });
+    </script>
+</body>
+</html>
