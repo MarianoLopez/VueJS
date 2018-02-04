@@ -24,9 +24,9 @@ class Main(val skillsService: SkillsService, val mapper: ObjectMapper) {
             ResponseEntity(Message("insert skill fail",data = errors.groupByFieldMessage()),HttpStatus.NOT_ACCEPTABLE)
         }else{
             if(skillsService.insert(skill)){
-                ResponseEntity(Message("insert skill success",data = mapper.valueToTree(skill)),HttpStatus.OK)
+                ResponseEntity(Message("insert skill success",data = skill),HttpStatus.OK)
             }else{
-                ResponseEntity(Message("insert skill fail",data = mapper.valueToTree(skill)),HttpStatus.INTERNAL_SERVER_ERROR)
+                ResponseEntity(Message("insert skill fail",data = skill),HttpStatus.INTERNAL_SERVER_ERROR)
             }
         }
     }
