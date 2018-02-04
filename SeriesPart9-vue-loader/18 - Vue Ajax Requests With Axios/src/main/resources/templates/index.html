@@ -5,8 +5,7 @@
     <title>Kotlin Vue</title>
     <script src="../static/js/vue.js" th:src="@{js/vue.js}"></script>
     <script src="../static/js/axios.min.js" th:src="@{js/axios.min.js}"></script>
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="../static/materialize/css/materialize.min.css" th:href="@{materialize/css/materialize.min.css}">
 
 </head>
 <body>
@@ -19,55 +18,57 @@
         </div>
         <div class="col s9">
             <card title="Add a skill">
-                <form class="col s12" @submit.prevent="onSubmit" @keydown="error.clean($event.target.id)">
+                <form class="col s12" @submit.prevent="onSubmit" @keydown="form.error.clean($event.target.id)">
                     <div class="row">
                         <div class="input-field col s6 ">
                             <label for="name" class="active">Name</label>
-                            <input id="name" type="text" v-model="newSkill.name" class="validate">
-                            <span class="red-text text-darken-2" v-if="error.has('name')" v-text="error.get('name')"></span>
+                            <input id="name" type="text" v-model="form.name" class="validate">
+                            <span class="red-text text-darken-2" v-if="form.error.has('name')" v-text="form.error.get('name')"></span>
                         </div>
                         <div class="input-field col s6">
                             <label for="description" class="active">Description</label>
-                            <input id="description" type="text" v-model="newSkill.description" class="validate">
-                            <span class="red-text text-darken-2" v-if="error.has('description')" v-text="error.get('description')"></span>
+                            <input id="description" type="text" v-model="form.description" class="validate">
+                            <span class="red-text text-darken-2" v-if="form.error.has('description')" v-text="form.error.get('description')"></span>
                         </div>
                     </div>
                     <div class="input-field col s3 row">
-                        <button class="btn waves-effect waves-light" type="submit" name="action" :disabled="error.any()">Submit</button>
+                        <button class="btn waves-effect waves-light" type="submit" name="action" :disabled="form.error.any()">Submit</button>
                     </div>
                 </form>
             </card>
         </div>
     </div>
-    <script src="../static/js/Models/Error.js" th:src="@{js/Models/Error.js}"></script>
+    <script src="../static/js/Models/Form.js" th:src="@{js/Models/Form.js}"></script>
     <script src="../static/js/Components/Card.js" th:src="@{js/Components/Card.js}"></script>
     <script type="text/javascript">
         Vue.prototype.$http = axios;//replace vue resource with axios
         new Vue({
             el:'#root',
             data:{
-                newSkill:{
+                form:new Form({
                     name:'',
                     description:''
-                },
-                skills:[],
-                error:new Error()
+                }),
+                skills:[]
             },
             methods:{
                 onSubmit(){
-                    this.$http.post('/skills',this.newSkill)
-                        .then(resp=>{
-                            alert('success');
-                            this.newSkill.name = '';
-                            this.newSkill.description = '';
-                            this.getSkills();
-                        })
-                        .catch(err=>this.error = new Error(err.response.data))
+                    this.form.submit('/skills',resp=>{
+                       this.form.clean();
+                       this.getSkills();
+                    });
                 },
                 getSkills(){
                     this.$http.get('/skills')
                         .then(resp=>this.skills = resp.data)
-                        .catch(error=>this.skills=['fake','data']);
+                        .catch(err=>{
+                            if(err.response) {
+                                console.log(err.response.status)
+                                //handle error here..
+                            }else{
+                                this.skills=[{name:'fake data',description:'run the server'}];
+                            }
+                        });
                 }
             },
             mounted(){
