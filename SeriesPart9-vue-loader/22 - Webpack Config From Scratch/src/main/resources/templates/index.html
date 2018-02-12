@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Kotlin Vue</title>
-    <script src="../static/js/vue.js" th:src="@{js/vue.js}"></script>
-    <script src="../static/js/axios.min.js" th:src="@{js/axios.min.js}"></script>
     <link rel="stylesheet" href="../static/materialize/css/materialize.min.css" th:href="@{materialize/css/materialize.min.css}">
 
 </head>
@@ -38,48 +36,6 @@
             </card>
         </div>
     </div>
-    <script src="../static/js/Models/Form.js" th:src="@{js/Models/Form.js}"></script>
-    <script src="../static/js/Components/Card.js" th:src="@{js/Components/Card.js}"></script>
-    <script type="text/javascript">
-        Vue.prototype.$http = axios;//replace vue resource with axios
-        new Vue({
-            el:'#root',
-            data:{
-                form:new Form({
-                    name:'',
-                    description:''
-                }),
-                skills:[]
-            },
-            methods:{
-                onSubmit() {
-                    this.form.submit('/skills')
-                        .then(res => {
-                            this.form.clean();
-                            this.getSkills();
-                        })
-                        .catch(err=>{
-                           console.log(err);
-                        });
-
-                },
-                getSkills(){
-                    this.$http.get('/skills')
-                        .then(resp=>this.skills = resp.data)
-                        .catch(err=>{
-                            if(err.response) {
-                                console.log(err.response.status)
-                                //handle error here..
-                            }else{
-                                this.skills=[{name:'fake data',description:'run the server'}];
-                            }
-                        });
-                }
-            },
-            mounted(){
-                this.getSkills();
-            }
-        });
-    </script>
+    <script src="../static/js/app.js" th:src="@{js/app.js}"></script>
 </body>
 </html>
